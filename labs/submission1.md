@@ -29,3 +29,5 @@
 
 ## Task 2 — PR Template & Checklist
 
+### 1. Наличие и использование шаблона PR
+
