@@ -127,7 +127,39 @@ blob содержит только контент файла, поэтому о�
 
 
 ## Task 3 — Граф истории (git log --graph)
-...
+```
+    PS C:\Users\amust\DevOps-Intro> git log --oneline --graph --all
+    * 446a8d4 (side-branch) Side branch commit
+    * 0561da9 (HEAD -> feature/lab2) added task2
+    | * d3f4932 (git-reset-practice) Second commit
+    | * 5607830 First commit
+    |/
+    * a8790d5 Add test file
+    *   e32cfc5 (origin/main, origin/HEAD, main) Merge remote-tracking branch 'upstream/main
+    |\
+    | * 6f044dd (upstream/main) Replace IPFS with Nix
+    | * 0a87e1c refactor: reduce prescriptiveness in GitLab CI instructions
+    | * eaea715 feat: add GitLab CI alternative instructions to lab3
+    | | * 0fcb933 (origin/feature/lab1, feature/lab1) docs: complete lab1 report
+    | | * 363679a docs: fixed submission1.md
+    | | * 025718b docs: fixed PR template
+    | | * 1abdd45 docs: add lab1 submission stub
+    | |/
+    |/|
+    * | 77646db docs: fixed submission1.md
+    * | d259eaf docs: add PR template and fixed submission1.md
+    * | 157cc12 docs: add screenshots for signed commits
+    * | d4a3172 docs: fixed image name
+    * | fb0d796 docs: fixed image name
+    * | 5baef11 docs: add commit signing summary for task1
+    |/
+    * d6b6a03 Update lab2
+    * 87810a0 feat: remove old Exam Exemption Policy
+    | * 0a09c16 (upstream/release/f25) feat: remove old Exam Exemption Policy
+    |/
+    * 1e1c32b feat: update structure
+```
+**Пояснение:** Вывод `git log --graph --all` помогает визуально понять структуру истории: где ветки расходились и где снова сходились, а также какие коммиты принадлежат каким веткам. Это снижает риск ошибиться при работе с несколькими ветками и облегчает отладку: видно, от какого коммита была создана ветка и какие изменения в ней появились. В моём графе видно, что side-branch содержит отдельный коммит Side branch commit, а ветка git-reset-practice живёт параллельно и не мешает ветке сдачи feature/lab2.
 
 ## Task 4 — Теги
 ...
