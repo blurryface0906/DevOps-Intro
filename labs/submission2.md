@@ -181,7 +181,110 @@ blob содержит только контент файла, поэтому о�
 
 
 ## Task 5 — switch, checkout, restore
-...
+```
+    PS C:\Users\amust\DevOps-Intro> git switch -c cmd-compare
+    Switched to a new branch 'cmd-compare'
+    PS C:\Users\amust\DevOps-Intro> git switch -
+    Switched to branch 'feature/lab2'
+    PS C:\Users\amust\DevOps-Intro> git switch cmd-compare
+    Switched to branch 'cmd-compare'
+    PS C:\Users\amust\DevOps-Intro> git status
+    On branch cmd-compare
+    Untracked files:
+      (use "git add <file>..." to include in what will be committed)
+            .idea/
+            labs/.idea/
+    
+    nothing added to commit but untracked files present (use "git add" to track)
+    PS C:\Users\amust\DevOps-Intro> git branch
+    * cmd-compare
+      feature/lab1
+      feature/lab2
+      git-reset-practice
+      main
+      side-branch
+```
+**Пояснение:** `git switch` используется только для операций с ветками: создать ветку и перейти на неё (`git switch -c ...`), перейти на существующую ветку или быстро вернуться на предыдущую (`git switch -`). Это удобно, потому что команда не пытается восстанавливать файлы и не смешивает разные действия в одной команде.
+
+```
+    PS C:\Users\amust\DevOps-Intro> echo "scratch" >> demo.txt
+    PS C:\Users\amust\DevOps-Intro> git status
+    On branch cmd-compare
+    Untracked files:
+      (use "git add <file>..." to include in what will be committed)
+            .idea/
+            demo.txt
+            labs/.idea/
+    
+    nothing added to commit but untracked files present (use "git add" to track)
+    PS C:\Users\amust\DevOps-Intro> git add demo.txt
+    PS C:\Users\amust\DevOps-Intro> git status
+    On branch cmd-compare
+    Changes to be committed:
+      (use "git restore --staged <file>..." to unstage)
+            new file:   demo.txt
+    
+    Untracked files:
+      (use "git add <file>..." to include in what will be committed)
+            .idea/
+            labs/.idea/
+    
+    PS C:\Users\amust\DevOps-Intro> git restore demo.txt
+    PS C:\Users\amust\DevOps-Intro> git status
+    On branch cmd-compare
+    Changes to be committed:
+      (use "git restore --staged <file>..." to unstage)
+            new file:   demo.txt
+    
+    Untracked files:
+      (use "git add <file>..." to include in what will be committed)
+            .idea/
+            labs/.idea/
+```
+**Пояснение:** Когда `demo.txt` был untracked, Git не мог его восстановить, потому что файл ещё не существует в истории/индексе как отслеживаемый путь. Поэтому я дописал `git add demo.txt`, после чего файл стал известен Git (staged как `new file`), но `git restore demo.txt` по умолчанию восстанавливает содержимое из индекса в рабочую директорию, а у меня рабочая копия и так совпадала с тем, что было в индексе, поэтому `git status` остался прежним.
+
+```
+    error: pathspec 'demo.txt' did not match any file(s) known to git
+    PS C:\Users\amust\DevOps-Intro> git add demo.txt
+    PS C:\Users\amust\DevOps-Intro> git commit -m "chore: add demo.txt for restore demo"
+    [cmd-compare 663bec4] chore: add demo.txt for restore demo
+     1 file changed, 0 insertions(+), 0 deletions(-)
+     create mode 100644 demo.txt
+    PS C:\Users\amust\DevOps-Intro> echo "line after commit" >> demo.txt
+    PS C:\Users\amust\DevOps-Intro> git status
+    On branch cmd-compare
+    Changes not staged for commit:
+      (use "git add <file>..." to update what will be committed)
+      (use "git restore <file>..." to discard changes in working directory)
+            modified:   demo.txt
+            modified:   labs/submission2.md
+    
+    Untracked files:
+      (use "git add <file>..." to include in what will be committed)
+            .idea/
+            labs/.idea/
+    
+    no changes added to commit (use "git add" and/or "git commit -a")
+    PS C:\Users\amust\DevOps-Intro> git restore --source=HEAD~1 demo.txt
+    PS C:\Users\amust\DevOps-Intro> git status
+    On branch cmd-compare
+    Changes not staged for commit:
+      (use "git add/rm <file>..." to update what will be committed)
+      (use "git restore <file>..." to discard changes in working directory)
+            deleted:    demo.txt
+            modified:   labs/submission2.md
+    
+    Untracked files:
+      (use "git add <file>..." to include in what will be committed)
+            .idea/
+            labs/.idea/
+    
+    no changes added to commit (use "git add" and/or "git commit -a")
+```
+**Пояснение:** `git restore --source=HEAD~1 demo.txt` восстанавливает файл так, как он выглядел в коммите `HEAD~1`. Если в `HEAD~1` этого файла не было, Git приводит рабочую директорию к состоянию источника, поэтому файл помечается как удалённый (`deleted: demo.txt`). Это означает, что мы восстановили состояние прошлого коммита, где файл не существовал. Восстановление из конкретного коммита удобно для отката отдельных файлов без перемещения `HEAD` и без влияния на остальные изменения.
+
+**Когда что использовать:** `git switch`, когда нужно безопасно и понятно работать с ветками (создать/переключиться/вернуться на предыдущую). `git restore` — когда нужно откатывать изменения в файлах или восстановить файл из конкретного коммита. `git checkout` исторически работает и с ветками, и с файлами, но из-за перегруженности его часто избегают практиках в пользу `switch` и `restore`.
+
 
 ## Challenges & Solutions
 ...
