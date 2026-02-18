@@ -1,0 +1,19 @@
+name: lab3
+
+on:
+  push:
+    branches:
+      - feature/lab3
+
+jobs:
+  lab3:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Basic info
+        run: |
+          echo "Hello from GitHub Actions!"
+          echo "Triggered by: $GITHUB_EVENT_NAME"
+          echo "Branch: $GITHUB_REF_NAME"
